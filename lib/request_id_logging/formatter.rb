@@ -2,6 +2,7 @@ require 'request_id_logging/constants'
 require 'logger'
 
 module RequestIdLogging
+  # A logger formatter which prepends request_id to message.
   class Formatter < Logger::Formatter
     DEFAULT_REQ_ID_PROC = ->(id) { id }
 
