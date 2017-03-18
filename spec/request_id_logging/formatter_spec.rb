@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'English'
 
 describe RequestIdLogging::Formatter do
   describe '#call' do
@@ -19,7 +20,7 @@ describe RequestIdLogging::Formatter do
     subject { formatter.call(severity, time, progname, msg) }
 
     it 'returns formatted string using Logger::Formatter::Format with request_id' do
-      expected = Logger::Formatter::Format % [severity[0..0], time_str, $$, severity, progname, "[#{req_id}] #{msg}"]
+      expected = Logger::Formatter::Format % [severity[0..0], time_str, $PROCESS_ID, severity, progname, "[#{req_id}] #{msg}"]
       should eq(expected)
     end
 
@@ -28,7 +29,7 @@ describe RequestIdLogging::Formatter do
 
       it 'creates message by Exception and returns formatted string using Logger::Formatter::Format with request_id and created message' do
         msg_str = "[#{req_id}] #{msg.message} (#{msg.class})\n" << (msg.backtrace || []).join("\n")
-        expected = Logger::Formatter::Format % [severity[0..0], time_str, $$, severity, progname, msg_str]
+        expected = Logger::Formatter::Format % [severity[0..0], time_str, $PROCESS_ID, severity, progname, msg_str]
         should eq(expected)
       end
     end
@@ -38,7 +39,7 @@ describe RequestIdLogging::Formatter do
 
       it 'creates message by #inspect and returns formatted string using Logger::Formatter::Format with request_id and created message' do
         msg_str = "[#{req_id}] #{msg.inspect}"
-        expected = Logger::Formatter::Format % [severity[0..0], time_str, $$, severity, progname, msg_str]
+        expected = Logger::Formatter::Format % [severity[0..0], time_str, $PROCESS_ID, severity, progname, msg_str]
         should eq(expected)
       end
     end
@@ -58,7 +59,7 @@ describe RequestIdLogging::Formatter do
       let(:formatter) { RequestIdLogging::Formatter.new(request_id_proc: req_id_proc) }
 
       it 'returns formatted string with req_id_proc result string' do
-        expected = Logger::Formatter::Format % [severity[0..0], time_str, $$, severity, progname, "[#{req_id.upcase}] #{msg}"]
+        expected = Logger::Formatter::Format % [severity[0..0], time_str, $PROCESS_ID, severity, progname, "[#{req_id.upcase}] #{msg}"]
         should eq(expected)
       end
     end
