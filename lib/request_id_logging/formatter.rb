@@ -20,7 +20,11 @@ module RequestIdLogging
     end
 
     def call(severity, time, progname, msg)
-      @original_formatter ? @original_formatter.call(severity, time, progname, new_msg(msg)) : super(severity, time, progname, new_msg(msg))
+      if @original_formatter
+        @original_formatter.call(severity, time, progname, new_msg(msg))
+      else
+        super(severity, time, progname, new_msg(msg))
+      end
     end
 
     private

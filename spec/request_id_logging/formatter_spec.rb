@@ -19,17 +19,19 @@ describe RequestIdLogging::Formatter do
 
     subject { formatter.call(severity, time, progname, msg) }
 
-    it 'returns formatted string using Logger::Formatter::Format with request_id' do
-      expected = format(Logger::Formatter::Format, severity[0..0], time_str, $PROCESS_ID, severity, progname, "[#{req_id}] #{msg}")
+    it 'returns formatted string with request_id' do
+      expected = format(Logger::Formatter::Format, severity[0], time_str, $PROCESS_ID,
+                        severity, progname, "[#{req_id}] #{msg}")
       should eq(expected)
     end
 
     context 'when msg is Exception' do
       let(:msg) { StandardError.new }
 
-      it 'creates message by Exception and returns formatted string using Logger::Formatter::Format with request_id and created message' do
+      it 'generates message from Exception and returns formatted string with request_id' do
         msg_str = "[#{req_id}] #{msg.message} (#{msg.class})\n" << (msg.backtrace || []).join("\n")
-        expected = format(Logger::Formatter::Format, severity[0..0], time_str, $PROCESS_ID, severity, progname, msg_str)
+        expected = format(Logger::Formatter::Format, severity[0], time_str, $PROCESS_ID,
+                          severity, progname, msg_str)
         should eq(expected)
       end
     end
@@ -37,9 +39,10 @@ describe RequestIdLogging::Formatter do
     context 'when msg is not String or Exception' do
       let(:msg) { %w(aaa bbb) }
 
-      it 'creates message by #inspect and returns formatted string using Logger::Formatter::Format with request_id and created message' do
+      it 'generates message using #inspect and returns formatted string with request_id' do
         msg_str = "[#{req_id}] #{msg.inspect}"
-        expected = format(Logger::Formatter::Format, severity[0..0], time_str, $PROCESS_ID, severity, progname, msg_str)
+        expected = format(Logger::Formatter::Format, severity[0], time_str, $PROCESS_ID, severity,
+                          progname, msg_str)
         should eq(expected)
       end
     end
@@ -49,7 +52,9 @@ describe RequestIdLogging::Formatter do
       let(:formatter) { RequestIdLogging::Formatter.new(formatter: original_formatter) }
 
       it 'calls original_formatter#call with message including request_id and returns its result' do
-        expect(original_formatter).to receive(:call).with(severity, time, progname, "[#{req_id}] #{msg}").and_return('result')
+        expect(original_formatter).to receive(:call)
+                                        .with(severity, time, progname, "[#{req_id}] #{msg}")
+                                        .and_return('result')
         should eq('result')
       end
     end
@@ -59,7 +64,8 @@ describe RequestIdLogging::Formatter do
       let(:formatter) { RequestIdLogging::Formatter.new(request_id_proc: req_id_proc) }
 
       it 'returns formatted string with req_id_proc result string' do
-        expected = format(Logger::Formatter::Format, severity[0..0], time_str, $PROCESS_ID, severity, progname, "[#{req_id.upcase}] #{msg}")
+        expected = format(Logger::Formatter::Format, severity[0], time_str, $PROCESS_ID, severity,
+                          progname, "[#{req_id.upcase}] #{msg}")
         should eq(expected)
       end
     end
