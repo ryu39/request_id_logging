@@ -1,6 +1,10 @@
 # RequestIdLogging
 
+[![Gem Version](https://badge.fury.io/rb/request_id_logging.svg)](https://badge.fury.io/rb/request_id_logging)
 [![Build Status](https://travis-ci.org/ryu39/request_id_logging.svg?branch=master)](https://travis-ci.org/ryu39/request_id_logging)
+[![Code Climate](https://codeclimate.com/github/ryu39/request_id_logging/badges/gpa.svg)](https://codeclimate.com/github/ryu39/request_id_logging)
+[![Test Coverage](https://codeclimate.com/github/ryu39/request_id_logging/badges/coverage.svg)](https://codeclimate.com/github/ryu39/request_id_logging/coverage)
+[![Issue Count](https://codeclimate.com/github/ryu39/request_id_logging/badges/issue_count.svg)](https://codeclimate.com/github/ryu39/request_id_logging)
 
 RequestIdLogging provides a Rack middleware and a logger formatter to prepend X-Request-Id to log messages in your Rails app.
 
