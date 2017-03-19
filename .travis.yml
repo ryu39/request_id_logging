@@ -13,5 +13,7 @@ before_install:
   - gem install bundler --no-document
 script:
   - 'bundle exec rspec'
+after_success:
+  - 'bundle exec codeclimate-test-reporter'
 
 cache: bundler
