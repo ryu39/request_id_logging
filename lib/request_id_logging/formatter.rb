@@ -2,6 +2,7 @@ require 'request_id_logging/constants'
 require 'logger'
 
 module RequestIdLogging
+  # A logger formatter which prepends request_id to message.
   class Formatter < Logger::Formatter
     DEFAULT_REQ_ID_PROC = ->(id) { id }
 
@@ -19,7 +20,11 @@ module RequestIdLogging
     end
 
     def call(severity, time, progname, msg)
-      @original_formatter ? @original_formatter.call(severity, time, progname, new_msg(msg)) : super(severity, time, progname, new_msg(msg))
+      if @original_formatter
+        @original_formatter.call(severity, time, progname, new_msg(msg))
+      else
+        super(severity, time, progname, new_msg(msg))
+      end
     end
 
     private

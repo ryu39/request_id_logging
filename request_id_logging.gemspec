@@ -1,4 +1,3 @@
-# coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'request_id_logging/version'
@@ -9,10 +8,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ['ryu39']
   spec.email         = ['dev.ryu39@gmail.com']
 
-  spec.summary       = %q{Logging with request id in your Rails app.}
-  spec.description   = <<EOS.gsub("\n", ' ')
-This gems provide a Rack middleware and a logger formatter for logging with request id in your Rails app.
-EOS
+  spec.summary       = 'Logging with request id in your Rails app.'
+  spec.description   = 'This gems provide a Rack middleware and a logger formatter ' \
+                       'for logging with request id in your Rails app.'
   spec.homepage      = 'https://github.com/ryu39/request_id_logging'
   spec.license       = 'MIT'
 
@@ -26,4 +24,5 @@ EOS
   spec.add_development_dependency 'bundler', '~> 1.13'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'rubocop'
 end
