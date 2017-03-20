@@ -31,7 +31,7 @@ describe RequestIdLogging::Formatter do
       let(:msg) { StandardError.new }
 
       it 'generates message from Exception and returns formatted string with request_id' do
-        msg_str = "[#{req_id}] #{msg.message} (#{msg.class})\n" << (msg.backtrace || []).join("\n")
+        msg_str = "[#{req_id}] #{msg.message} (#{msg.class})\n#{(msg.backtrace || []).join("\n")}"
         expected = format(Logger::Formatter::Format, severity[0], time_str, $PROCESS_ID,
                           severity, progname, msg_str)
         should eq(expected)
