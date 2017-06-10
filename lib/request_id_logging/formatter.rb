@@ -10,7 +10,8 @@ module RequestIdLogging
 
     # Initialize RequestIdLogging::Formatter
     #
-    # @param [Logger::Formatter] formatter Optional, if you have original formatter, please specify it to this arg.
+    # @param [Logger::Formatter] formatter Optional, if you have original formatter,
+    #   please specify it to this arg.
     #   This formatter prepends request_id to message, and calls your formatter #call method.
     #   If not specified, then message is generated in this formatter.
     # @param [Proc] request_id_proc Optional, proc object or lambda to customize logged request_id.

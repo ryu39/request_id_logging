@@ -5,21 +5,19 @@ require 'English'
 
 describe RequestIdLogging::Formatter do
   describe '#call' do
-    let(:formatter) { RequestIdLogging::Formatter.new }
+    subject { formatter.call(severity, time, progname, msg) }
 
+    let(:formatter) { RequestIdLogging::Formatter.new }
     let(:severity) { 'INFO' }
     let(:time) { Time.now }
+    let(:time_str) { time.strftime('%Y-%m-%dT%H:%M:%S.%6N '.freeze) }
     let(:progname) { 'progname' }
     let(:msg) { 'message' }
-
     let(:req_id) { 'req_id' }
+
     before do
       Thread.current[RequestIdLogging::FIBER_LOCAL_KEY] = req_id
     end
-
-    let(:time_str) { time.strftime('%Y-%m-%dT%H:%M:%S.%6N '.freeze) }
-
-    subject { formatter.call(severity, time, progname, msg) }
 
     it 'returns formatted string with request_id' do
       expected = format(Logger::Formatter::Format, severity[0], time_str, $PROCESS_ID,
@@ -50,14 +48,17 @@ describe RequestIdLogging::Formatter do
     end
 
     context 'when formatter is specified' do
-      let(:original_formatter) { double('original_formatter') }
+      let(:original_formatter) { instance_double(::Logger::Formatter) }
       let(:formatter) { RequestIdLogging::Formatter.new(formatter: original_formatter) }
 
+      before do
+        allow(original_formatter).to receive(:call).and_return('result')
+      end
+
       it 'calls original_formatter#call with message including request_id and returns its result' do
-        expect(original_formatter).to receive(:call)
-                                        .with(severity, time, progname, "[#{req_id}] #{msg}")
-                                        .and_return('result')
         should eq('result')
+        expect(original_formatter).to have_received(:call)
+                                        .with(severity, time, progname, "[#{req_id}] #{msg}")
       end
     end
 
