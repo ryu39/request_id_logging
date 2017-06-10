@@ -7,3 +7,6 @@ inherit_gem:
 
 AllCops:
   TargetRubyVersion: 2.0
+
+RSpec/DescribedClass:
+  Enabled: false
